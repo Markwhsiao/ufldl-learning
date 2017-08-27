@@ -1,5 +1,5 @@
 import numpy as np
-import tool
+import load_MNIST
 import scipy.optimize as optimize
 import scipy.sparse as sparse
 from numpy.matlib import repmat
@@ -30,9 +30,8 @@ def loadTrainData():
         % On some platforms, the files might be saved as 
         % train-images.idx3-ubyte / train-labels.idx1-ubyte
         '''
-        images = tool.loadMniImageSet("./mnist/train-images-idx3-ubyte")
-        labels = tool.loadMniLabelSet("./mnist/train-labels-idx1-ubyte")
-        #labels[labels==0] = 10
+        images = load_MNIST.loadMniImageSet("./mnist/train-images-idx3-ubyte")
+        labels = load_MNIST.loadMniLabelSet("./mnist/train-labels-idx1-ubyte")
         return images,labels
 
 
