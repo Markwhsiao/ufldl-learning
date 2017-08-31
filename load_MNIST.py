@@ -3,7 +3,7 @@ import struct
 
 def reshape(mat,n,m):
         '''
-        reshape col main
+        reshape col main 
         '''
         mat = np.reshape(mat,(n,m),order='F')
         return mat
@@ -15,7 +15,7 @@ def loadMniImageSet(filename):
     print "load image set",filename
     binfile= open(filename, 'rb')
     buffers = binfile.read()
-
+ 
     head = struct.unpack_from('>IIII' , buffers ,0)
     print "head,",head
     offset = struct.calcsize('>IIII')
@@ -25,7 +25,7 @@ def loadMniImageSet(filename):
     bits = imgNum * width * height
     bitsString = '>' + str(bits) + 'B' #like '>47040000B'
     imgs = struct.unpack_from(bitsString,buffers,offset)
-
+ 
     binfile.close()
     imgs = reshape(imgs,width*height,imgNum)
     print "load imgs finished"
@@ -38,7 +38,7 @@ def loadMniLabelSet(filename):
     print "load label set",filename
     binfile = open(filename, 'rb')
     buffers = binfile.read()
-
+ 
     head = struct.unpack_from('>II' , buffers ,0)
     print "head,",head
     imgNum=head[1]
@@ -46,7 +46,14 @@ def loadMniLabelSet(filename):
     numString = '>'+str(imgNum)+"B"
     labels = struct.unpack_from(numString , buffers , offset)
     binfile.close()
-    labels = reshape(labels,1,imgNum)
+    labels = np.reshape(labels,(imgNum),order='F')
     print 'load label finished'
 
     return labels
+
+
+if __name__ == "__main__":
+    im     = loadMniImageSet("./mnist/t10k-images-idx3-ubyte")
+    labels = loadMniLabelSet("./mnist/train-labels-idx1-ubyte")
+    print im.shape
+    print labels.shape
