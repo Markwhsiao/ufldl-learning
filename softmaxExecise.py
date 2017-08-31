@@ -3,6 +3,7 @@ import load_MNIST
 import scipy.optimize as optimize
 import scipy.sparse as sparse
 from numpy.matlib import repmat
+import check_gradient
 #### step0 Init constants and parameters
 def init():
         '''
@@ -100,6 +101,13 @@ def softmax_train(input_size, num_classes, lambda_, data, labels, options={'maxi
         # Return optimum theta, input size & num classes
         opt_theta = result.x
         return opt_theta, input_size, num_classes
+
+def check_softmax_cost(theta, numClasses, inputSize, lmbda, images, labels):
+    inputData   = images[:,0:100]
+    inputLabels = labels[0:100]
+    J = lambda x : softmaxCost(x, numClasses, inputSize, lmbda,inputData, inputLabels)
+    return check_gradient.check_compute_gradient(J,theta)
+
 
 if __name__ == "__main__":
     inputSize,numClasses,lmbda,theta = init()
